@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>登陆</title>
+</head>
+<body>
+
+--欢迎登陆系统--
+<!-- /login是springsecurity自动生成的地址，必须是post提交 -->
+<form action="/login" method="post">
+
+	<!-- 用户名和密码的名称不能随便写，因为要通过springsecurity的form-login的username-parameter和password-parameter进行指定，
+	form-login默认是username和password -->
+	用户名：<input name="username"/><br/>
+	密码：<input name="password"/><br/>
+	<button>登陆</button>
+	
+</form>
+</body>
+</html>

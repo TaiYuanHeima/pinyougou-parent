@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/security
+		http://www.springframework.org/schema/security/spring-security.xsd">
+
+
+    <!--登录，注册相关的操作，静态资源不参与权限控制-->
+    <http pattern="/login.html" security="none"></http>
+    <http pattern="/login_error.html" security="none"></http>
+
+    <!-- 页面的拦截规则 use-expressions:是否启动spel表达式，默认为true，如果是true那access的编写方式为hasRole('ROLE_USER')-->
+    <http use-expressions="false">
+
+        <!--http://localhost:9090/index.html-->
+        <!-- /*:当前根目录，不包含子目录 ; /**:当前根目录及其子目录 -->
+        <!-- 当前用户必须有ROLE_USER的角色才可以访问根目录及所属子目录的资源
+             hasAnyRole : 拦截的请求路径所对应的用户，要满足其中的一个角色才能访问
+        -->
+        <!--ROLE_ ： 固定写法-->
+        <logout logout-url="" logout-success-url=""/><!--退出的地址，会自动生成  logout-success-url:退出后跳转的地址-->
+        <intercept-url pattern="/" access="ROLE_USER"/>
+
+
+        <!-- 开启表单登录功能 -->
+        <!-- login-page：配置自定义登陆页面;
+            default-target-url：配置登陆成功默认跳转的页面;
+            authentication-failure-url:配置登陆失败的页面
+            login-processing-url : 设置登录的请求路径,默认是/login
+            username-parameter : 设置页面中input标签的name属性的值，默认是username
+            password-parameter : 设置页面中input标签的name属性的值，默认是password
+            -->
+        <form-login login-page="/login.html" default-target-url="/index.html" authentication-failure-url="/login_error.html"/>
+        <logout/><!--退出的地址，会自动生成  logout-success-url:退出后跳转的地址-->
+        <!-- 关闭csrf操作 -->
+        <csrf disabled="true"/><!--关闭跨域-->
+        <headers>
+            <frame-options policy="SAMEORIGIN"/><!--如果你在系统中使用了框架页，需要设置框架页的策略为SAMEORIGIN-->
+        </headers>
+    </http>
+
+    <!-- 认证管理器 -->
+    <authentication-manager>
+        <authentication-provider>
+            <!-- 管理的角色 -->
+            <!-- 如果登录的是admin，就会访问admin所对应的 ROLE_USER的目录，如果不是就不能访问-->
+            <!--如果是springsecurity5.0以上版本，这时候密码需要选择默认加密方式，如果想使用明文需要加上{noop}，5.0以下不用-->
+            <user-service>
+                <user name="admin"  password="123456" authorities="ROLE_USER"/>
+            </user-service>
+        </authentication-provider>
+    </authentication-manager>
+
+</beans:beans>

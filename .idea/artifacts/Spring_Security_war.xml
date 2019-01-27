@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="Spring-Security:war">
+    <output-path>$PROJECT_DIR$/pinyougou-parent/Spring-Security/target</output-path>
+    <root id="archive" name="Spring-Security-1.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="Spring-Security:war exploded" />
+    </root>
+  </artifact>
+</component>
